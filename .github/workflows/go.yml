@@ -43,13 +43,12 @@ jobs:
         run: 'npm i && npm run transform-tokens'
       # We now create a pull request
       - name: Create PR
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.PAT }}
           commit-message: "Tokens updated"
           title: "Design tokens updated"
           body: "Design tokens have been updated via Figma and need to be reviewed."
-          branch: "main"
-          committer: GitHub <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          signoff: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+          # this parameter is optional and defaults to master but I am using main
+          BRANCH_NAME: 'main'
