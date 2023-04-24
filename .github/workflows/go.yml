@@ -15,6 +15,8 @@ jobs:
     steps:
       # this lets us work in the actual repository
       - uses: actions/checkout@master
+      - uses: actions/checkout@v3
+
       # if the folder named "tokens" does not exist, create it
       - name: mkdir "tokens" directory
         # change tokens here (and in line 32) if you want to use a differently named folder
@@ -40,7 +42,14 @@ jobs:
       - name: Transform design tokens
         run: 'npm i && npm run transform-tokens'
       # We now create a pull request
-      - name: create pull request
-        run: gh pr create -B base_branch -H branch_to_merge --title 'Merge branch_to_merge into base_branch' --body 'Created by Github action'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.PAT }}
+          commit-message: "Tokens updated"
+          title: "Design tokens updated"
+          body: "Design tokens have been updated via Figma and need to be reviewed."
+          branch: "main"
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
