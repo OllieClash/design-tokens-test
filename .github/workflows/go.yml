@@ -40,14 +40,7 @@ jobs:
       - name: Transform design tokens
         run: 'npm i && npm run transform-tokens'
       # We now create a pull request
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v5
-        with:
-          commit-message: "Tokens updated"
-          title: "Design tokens updated"
-          body: "Design tokens have been updated via Figma and need to be reviewed."
-          branch: "main"
-          token: ${{ secrets.PAT }}
-          committer: GitHub <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          signoff: false
+      - name: create pull request
+        run: gh pr create -B base_branch -H branch_to_merge --title 'Merge branch_to_merge into base_branch' --body 'Created by Github action'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
